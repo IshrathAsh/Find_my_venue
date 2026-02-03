@@ -1,0 +1,246 @@
+/* =========================================================
+   UI DESIGN SYSTEM — SINGLE SOURCE OF TRUTH
+   ========================================================= */
+
+/* ======================
+   01. DESIGN TOKENS
+   ====================== */
+
+:root {
+  /* Colors */
+  --color-text-primary: #111111;
+  --color-text-secondary: #555555;
+  --color-bg-page: #f7f7f7;
+  --color-bg-surface: #ffffff;
+  --color-border: #e5e5e5;
+  --color-accent: #007bff;
+  --color-success: #2e7d32;
+  --color-error: #c62828;
+
+  /* Typography */
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Inter, sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Elevation */
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* ======================
+   02. BASE / RESET
+   ====================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ======================
+   03. TYPOGRAPHY
+   ====================== */
+
+h1 { font-size: var(--font-size-xl); font-weight: var(--font-weight-medium); }
+h2 { font-size: var(--font-size-lg); font-weight: var(--font-weight-medium); }
+h3 { font-size: var(--font-size-md); font-weight: var(--font-weight-medium); }
+
+p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* ======================
+   04. LAYOUT UTILITIES
+   ====================== */
+
+.container {
+  max-width: 1120px;
+  margin: auto;
+  padding: var(--space-6);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ======================
+   05. SURFACES
+   ====================== */
+
+.surface {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ======================
+   06. BUTTONS
+   ====================== */
+
+.btn {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--color-text-primary);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+/* ======================
+   07. INPUTS
+   ====================== */
+
+.input,
+.select {
+  width: 100%;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+/* ======================
+   08. CARDS
+   ====================== */
+
+.card {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+}
+
+.card-image {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-3);
+}
+
+/* ======================
+   09. BADGES
+   ====================== */
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+}
+
+.badge-success { background: #e8f5e9; color: var(--color-success); }
+.badge-error { background: #fdecea; color: var(--color-error); }
+
+/* ======================
+   10. DIVIDERS
+   ====================== */
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-4) 0;
+}
+
+/* ======================
+   11. COMPOSITES
+   ====================== */
+
+.search-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-2);
+}
+
+.venue-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ======================
+   12. CHECKOUT PATTERN
+   ====================== */
+
+.checkout-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+}
+
+/* ======================
+   13. STATES
+   ====================== */
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================================================
+   END OF UI SYSTEM
+   ========================================================= */
+

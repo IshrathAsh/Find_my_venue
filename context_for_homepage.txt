@@ -1,0 +1,262 @@
+CONTEXT: Venue Discovery Website — Next.js (App Router)
+Framework & Constraints
+
+Framework: Next.js (App Router)
+
+Use Server Components by default
+
+Use Client Components only where interaction is required
+
+No backend implementation unless specified
+
+Data can be mocked / static initially
+
+Project Structure (MANDATORY)
+/app
+  ├── layout.tsx
+  ├── page.tsx              // Landing page
+  ├── globals.css           // UI system CSS (already provided)
+  │
+  ├── components
+  │   ├── Hero.tsx
+  │   ├── Filters.tsx
+  │   ├── VenueList.tsx
+  │   ├── VenueCard.tsx
+  │   ├── BestForOccasion.tsx
+  │   ├── Reviews.tsx
+  │   └── Footer.tsx
+  │
+  ├── lib
+  │   ├── venueData.ts      // Mock venue data
+  │   ├── filterLogic.ts    // Filtering & fallback logic
+  │   └── location.ts       // Location permission handling
+
+Page Responsibility
+/app/page.tsx
+
+Orchestrates the full page
+
+Holds filter state
+
+Passes filtered data to components
+
+Does NOT contain UI logic directly
+
+This page is a Client Component because it:
+
+Handles filters
+
+Handles location permission
+
+Updates lists dynamically
+
+Hero Section (Hero.tsx)
+
+Server Component
+
+Contains:
+
+One <h1>
+
+One <h3>
+
+No buttons
+
+No images
+
+No interaction
+
+Filters / Functionality Block (Filters.tsx)
+
+Client Component
+
+Inputs
+
+Location (auto + manual)
+
+Occasion type
+
+Number of people
+
+Behavior
+
+On mount:
+
+Request browser geolocation
+
+If allowed:
+
+Resolve to city/area
+
+Set as default location
+
+If denied:
+
+Enable manual location input
+
+Continue without blocking
+
+Emits
+{
+  location,
+  occasion,
+  guestCount
+}
+
+Location Handling (lib/location.ts)
+
+Responsibilities:
+
+Request geolocation permission
+
+Handle allowed / denied states
+
+Convert coordinates → readable location (mock allowed)
+
+Must never throw or block UI.
+
+Venue Data (lib/venueData.ts)
+
+Each venue must include:
+
+{
+  id,
+  name,
+  area,
+  coordinates,
+  capacityMin,
+  capacityMax,
+  supportedOccasions[],
+  rating,
+  reviewCount,
+  ambienceImages[],
+  popularityScore
+}
+
+Filtering Logic (lib/filterLogic.ts)
+Strict Match
+
+Filter by:
+
+Distance from location
+
+Capacity >= guestCount
+
+supportedOccasions includes selected occasion
+
+Result:
+
+STRICT_MATCH_RESULTS
+
+Fallback Logic
+
+If strict results are empty:
+
+Fetch nearby venues
+
+Sort by:
+
+popularityScore
+
+rating
+
+Result:
+
+FALLBACK_RESULTS
+
+
+⚠️ User must never see an empty list.
+
+Curated Venue List (VenueList.tsx)
+
+Receives final venue array
+
+Maps into VenueCard
+
+Sorting priority:
+
+Occasion relevance
+
+Capacity closeness
+
+Rating
+
+Distance
+
+Venue Card (VenueCard.tsx)
+
+Must display:
+
+Name
+
+Area
+
+Capacity range
+
+Rating
+
+Ambience preview
+
+CTA (link to venue detail)
+
+CTA navigates to:
+
+/venue/[id]   (can be mocked)
+
+Best for Occasion (BestForOccasion.tsx)
+
+Render only if occasion exists
+
+Independent query:
+
+Filter venues by occasion
+
+Sort by rating + reviewCount + popularity
+
+Limit 5–8 items
+
+Reviews Section (Reviews.tsx)
+
+Pull reviews related to:
+
+Selected occasion if possible
+
+Else general reviews
+
+Each review includes:
+
+Rating
+
+Short text
+
+CTA → related venue detail page
+
+Users must be able to navigate to venue from reviews.
+
+Footer (Footer.tsx)
+
+Static component
+
+Informational links only
+
+No booking CTAs
+
+Global Rules (STRICT)
+
+Location permission is optional
+
+No empty states without fallback
+
+Venue detail page reachable from:
+
+Venue list
+
+Best for occasion
+
+Reviews
+
+Follow provided single CSS UI system
+
+No additional sections
+
+No UX copy generation

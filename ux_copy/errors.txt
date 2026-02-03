@@ -1,0 +1,9 @@
+Payment failed
+
+Something didn’t go through.
+No amount was deducted.
+
+Unavailable
+
+This venue was just booked for your date.
+Let me show you similar options.
