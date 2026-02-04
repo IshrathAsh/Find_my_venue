@@ -10,7 +10,7 @@ const supabase = createClient(
 
 export async function POST(request: Request) {
   try {
-    const { venueId, venueName, guestCount, date, requirements, userEmail } = await request.json();
+    const { venueId, venueName, guestCount, date, occasion, requirements, userEmail } = await request.json();
 
     // 1. Store in Supabase
     const { data, error: sbError } = await supabase
@@ -21,6 +21,7 @@ export async function POST(request: Request) {
           venue_name: venueName,
           guest_count: guestCount,
           event_date: date,
+          occasion: occasion,
           requirements,
           user_email: userEmail
         }
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
             <strong>${userEmail}</strong> has requested to book <strong>${venueName}</strong>.
           </p>
           <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Occasion:</strong> ${occasion}</p>
             <p><strong>Event Date:</strong> ${date}</p>
             <p><strong>Guests:</strong> ${guestCount}</p>
             <p><strong>Requirements:</strong> ${requirements || 'No special requirements listed.'}</p>
