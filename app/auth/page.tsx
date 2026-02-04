@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { supabase } from '../lib/supabase';
 import StandardPage from '../components/StandardPage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../components/AuthProvider';
 
-export default function AuthPage() {
+function AuthPageContent() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const router = useRouter();
@@ -118,5 +118,22 @@ export default function AuthPage() {
                 </div>
             }
         />
+    );
+}
+
+export default function AuthPage() {
+    return (
+        <Suspense fallback={
+            <StandardPage
+                title="Account Access"
+                content={
+                    <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
+                        <p style={{ color: 'var(--color-text-secondary)' }}>Loading...</p>
+                    </div>
+                }
+            />
+        }>
+            <AuthPageContent />
+        </Suspense>
     );
 }
