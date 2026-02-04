@@ -46,7 +46,7 @@ export default function FloatingNavbar() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                width: "85%",
+                width: "100%", /* Changed from 85% */
                 maxWidth: "1200px",
                 gap: "var(--space-6)",
                 padding: "10px 24px",
@@ -163,6 +163,10 @@ export default function FloatingNavbar() {
                 }
                 .nav-link:hover { opacity: 1; }
                 nav:hover { transform: translateY(1px); boxShadow: 0 12px 40px rgba(0,0,0,0.15); }
+
+                @media (max-width: 768px) {
+                    .nav-link { display: none; }
+                }
             `}</style>
         </div>
     );

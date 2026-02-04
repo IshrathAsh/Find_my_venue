@@ -91,7 +91,7 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
             <div style={{ maxWidth: "1000px", margin: "auto" }}>
                 <h1 style={{ marginBottom: "var(--space-8)" }}>Please review your booking</h1>
 
-                <div className="grid grid-2" style={{ gridTemplateColumns: "1.4fr 1fr", gap: "var(--space-8)", alignItems: "start" }}>
+                <div className="checkout-grid" style={{ gap: "var(--space-8)", alignItems: "start" }}>
                     <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-6)" }}>
                         {/* Event Details Section */}
                         <div className="surface" style={{ padding: "var(--space-6)" }}>
@@ -165,7 +165,7 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
                         )}
                     </div>
 
-                    <div style={{ position: "sticky", top: "140px" }}>
+                    <div className="sticky-summary">
                         <div className="surface luxury-shadow" style={{ padding: "var(--space-8)" }}>
                             <h3 style={{ marginBottom: "var(--space-6)" }}>Booking Summary</h3>
                             <div className="checkout-summary">

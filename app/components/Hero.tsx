@@ -30,7 +30,7 @@ export default function Hero() {
                 <h1 style={{
                     marginBottom: "var(--space-8)",
                     color: "var(--color-text-primary)",
-                    fontSize: "var(--font-size-2xl)",
+                    fontSize: "var(--font-size-2xl)", // Keeps 2xl on desktop, global css handles 640px override
                     lineHeight: "1.2",
                     letterSpacing: "-0.04em",
                     width: "100%"
