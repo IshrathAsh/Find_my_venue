@@ -31,11 +31,11 @@ export default function Hero() {
                     marginBottom: "var(--space-8)",
                     color: "var(--color-text-primary)",
                     fontSize: "var(--font-size-2xl)",
-                    lineHeight: "1.05",
-                    letterSpacing: "-0.04em"
+                    lineHeight: "1.2",
+                    letterSpacing: "-0.04em",
+                    width: "100%"
                 }}>
-                    Looking for a venue? <br />
-                    <span style={{ color: "var(--color-accent)" }}>We’ll help you find the right one.</span>
+                    Looking for a venue? <span style={{ color: "var(--color-accent)" }}>We’ll help you find the right one.</span>
                 </h1>
                 <p style={{
                     color: "var(--color-text-secondary)",

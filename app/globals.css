@@ -25,7 +25,7 @@
   --font-size-md: 18px;
   --font-size-lg: 24px;
   --font-size-xl: 38px;
-  --font-size-2xl: 60px;
+  --font-size-2xl: 52px;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -91,8 +91,10 @@ h1 {
   font-size: var(--font-size-2xl);
   font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin: 0;
+  line-height: 1.2;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 900px;
 }
 
 h2 {
@@ -100,7 +102,8 @@ h2 {
   font-size: var(--font-size-xl);
   font-weight: 600;
   letter-spacing: -0.02em;
-  margin: 0;
+  margin: 0 auto;
+  text-align: center;
 }
 
 h3 {
@@ -399,6 +402,13 @@ p {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Review Card Hover Effects */
+.review-card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-accent) !important;
 }
 
 /* =========================================================

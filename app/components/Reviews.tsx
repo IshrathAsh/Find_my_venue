@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Star } from "lucide-react";
@@ -54,18 +56,17 @@ export default function Reviews({ occasion }: { occasion?: string }) {
                 {filteredReviews.map((review) => (
                     <div
                         key={review.id}
-                        className="surface glass"
+                        className="surface glass review-card-hover"
                         style={{
                             padding: "var(--space-8)",
                             display: "flex",
                             flexDirection: "column",
                             gap: "var(--space-4)",
-                            minHeight: "300px",
-                            transition: "transform 0.3s ease",
-                            border: "1px solid var(--color-border)"
+                            minHeight: "340px",
+                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                            border: "1px solid var(--color-border)",
+                            position: "relative"
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-5px)"}
-                        onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
                     >
                         <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
                             {[...Array(5)].map((_, i) => (

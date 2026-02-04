@@ -47,7 +47,8 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
             if (response.ok) {
                 setSuccess(true);
             } else {
-                alert("Something went wrong. Please try again.");
+                const data = await response.json();
+                alert(`Error: ${data.error || "Internal Server Error"}\n\nHint: ${data.hint || "Check your console for details."}`);
             }
         } catch (error) {
             console.error("Booking failed:", error);

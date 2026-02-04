@@ -275,13 +275,13 @@ export default function VenuePage({ params }: { params: { id: string } }) {
                 <div className="grid grid-3" style={{ gridTemplateColumns: "2fr 1fr", gap: "var(--space-12)" }}>
                     {/* Main Info */}
                     <div>
-                        <div style={{ marginBottom: "var(--space-8)" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-2)" }}>
+                        <div style={{ marginBottom: "var(--space-8)", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--space-2)", marginBottom: "var(--space-2)" }}>
                                 <span className="badge badge-success">Highly Recommended</span>
                                 <span style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-secondary)" }}>{venue.reviewCount} verified reviews</span>
                             </div>
-                            <h1 style={{ marginBottom: "var(--space-3)" }}>{venue.name}</h1>
-                            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-6)" }}>
+                            <h1 style={{ marginBottom: "var(--space-3)", display: "block", width: "100%" }}>{venue.name}</h1>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--space-6)" }}>
                                 <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                                     <Star size={18} fill="#fbbf24" color="#fbbf24" />
                                     <span style={{ fontWeight: "600" }}>{venue.rating}</span>
