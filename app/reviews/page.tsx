@@ -12,7 +12,7 @@ export default function ReviewsPage() {
                         Hear from the people who have celebrated their most precious moments at our curated venues.
                         We believe in honest feedback to help you make the clearest decision.
                     </p>
-                    <Reviews />
+                    <Reviews layout="stack" />
                 </>
             }
         />

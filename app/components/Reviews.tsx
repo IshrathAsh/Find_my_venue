@@ -44,28 +44,32 @@ const mockReviews: Review[] = [
     }
 ];
 
-export default function Reviews({ occasion }: { occasion?: string }) {
+export default function Reviews({ occasion, layout = "grid" }: { occasion?: string, layout?: "grid" | "stack" }) {
     const filteredReviews = occasion
         ? mockReviews.filter(r => r.occasion === occasion)
-        : mockReviews.slice(0, 3);
+        : mockReviews; // Show all on dedicated page or filtered by occasion
+
+    const displayReviews = occasion ? filteredReviews : (layout === "grid" ? filteredReviews.slice(0, 3) : filteredReviews);
 
     return (
-        <section className="container">
-            {!occasion && <h2 style={{ marginBottom: "var(--space-8)", textAlign: "center", fontSize: "var(--font-size-xl)" }}>What our guests are saying</h2>}
-            <div className="grid grid-3" style={{ gap: "var(--space-6)" }}>
-                {filteredReviews.map((review) => (
+        <section className="container" style={{ padding: 0 }}>
+            {!occasion && layout === "grid" && <h2 style={{ marginBottom: "var(--space-8)", textAlign: "center", fontSize: "var(--font-size-xl)" }}>What our guests are saying</h2>}
+
+            <div className={layout === "grid" ? "grid grid-3" : "grid grid-1"} style={{ gap: "var(--space-6)" }}>
+                {displayReviews.map((review) => (
                     <div
                         key={review.id}
                         className="surface glass review-card-hover"
                         style={{
-                            padding: "var(--space-8)",
+                            padding: layout === "grid" ? "var(--space-8)" : "var(--space-10)",
                             display: "flex",
                             flexDirection: "column",
                             gap: "var(--space-4)",
-                            minHeight: "340px",
+                            minHeight: layout === "grid" ? "340px" : "auto",
                             transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                             border: "1px solid var(--color-border)",
-                            position: "relative"
+                            position: "relative",
+                            width: "100%"
                         }}
                     >
                         <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
@@ -75,7 +79,7 @@ export default function Reviews({ occasion }: { occasion?: string }) {
                         </div>
                         <p style={{
                             fontStyle: "italic",
-                            fontSize: "var(--font-size-md)",
+                            fontSize: layout === "grid" ? "var(--font-size-md)" : "20px",
                             lineHeight: "1.6",
                             color: "var(--color-text-primary)",
                             flex: 1
@@ -83,16 +87,16 @@ export default function Reviews({ occasion }: { occasion?: string }) {
                             "{review.text}"
                         </p>
                         <div style={{
-                            marginTop: "auto",
+                            marginTop: "var(--space-6)",
                             borderTop: "1px solid var(--color-border)",
-                            paddingTop: "var(--space-4)",
+                            paddingTop: "var(--space-6)",
                             display: "flex",
                             alignItems: "center",
                             gap: "var(--space-4)"
                         }}>
                             <div style={{
-                                width: "48px",
-                                height: "48px",
+                                width: "56px",
+                                height: "56px",
                                 borderRadius: "50%",
                                 background: "var(--color-accent)",
                                 color: "#fff",
@@ -100,16 +104,16 @@ export default function Reviews({ occasion }: { occasion?: string }) {
                                 alignItems: "center",
                                 justifyContent: "center",
                                 fontWeight: "700",
-                                fontSize: "18px"
+                                fontSize: "20px"
                             }}>
                                 {review.user.charAt(0)}
                             </div>
                             <div>
-                                <div style={{ fontSize: "var(--font-size-sm)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-primary)" }}>{review.user}</div>
-                                <p style={{ fontSize: "12px", color: "var(--color-text-secondary)", marginTop: "2px" }}>
+                                <div style={{ fontSize: "var(--font-size-md)", fontWeight: "var(--font-weight-bold)", color: "var(--color-text-primary)" }}>{review.user}</div>
+                                <p style={{ fontSize: "14px", color: "var(--color-text-secondary)", marginTop: "2px" }}>
                                     Visited <Link href={`/venue/${review.venueId}`} style={{ color: "var(--color-accent)", fontWeight: "600" }}>{review.venueName}</Link>
                                 </p>
-                                <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-text-secondary)", marginTop: "4px", display: "block" }}>
+                                <span style={{ fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-text-secondary)", marginTop: "4px", display: "block" }}>
                                     {review.occasion}
                                 </span>
                             </div>
