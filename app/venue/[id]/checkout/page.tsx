@@ -83,7 +83,7 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
                     </div>
                     <h1 style={{ fontSize: "var(--font-size-xl)" }}>Request Sent Successfully!</h1>
                     <p style={{ color: "var(--color-text-secondary)", lineHeight: "1.6" }}>
-                        I've sent your request to **{venue.name}**. Their manager will review the requirements and reach out to you at **{user?.email}** shortly.
+                        I've sent your request to <b>**{venue.name}**</b>. Their manager will review the requirements and reach out to you at <b>**{user?.email}**</b> shortly.
                     </p>
                     <Link href="/" className="btn btn-primary" style={{ padding: "16px 32px" }}>
                         Return to Discovery
