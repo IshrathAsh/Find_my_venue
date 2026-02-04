@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { occasions } from "../lib/venueData";
 import { FilterParams } from "../lib/filterLogic";
+import { requestLocation } from "../lib/location";
 
 interface FiltersProps {
     initialLocation?: string;
@@ -15,12 +16,22 @@ export default function Filters({ initialLocation, onSearch }: FiltersProps) {
     const [guestSelection, setGuestSelection] = useState<string>("any");
     const [customGuestCount, setCustomGuestCount] = useState<string>("");
     const [maxPrice, setMaxPrice] = useState<string>("any");
+    const [isLocating, setIsLocating] = useState(false);
 
     useEffect(() => {
         if (initialLocation && !location) {
             setLocation(initialLocation);
         }
     }, [initialLocation]);
+
+    const handleDetectLocation = async () => {
+        setIsLocating(true);
+        const detected = await requestLocation();
+        if (detected) {
+            setLocation(detected);
+        }
+        setIsLocating(false);
+    };
 
     const handleSearch = () => {
         const finalGuestCount = guestSelection === "custom"
@@ -49,14 +60,71 @@ export default function Filters({ initialLocation, onSearch }: FiltersProps) {
             }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
                     <label style={{ fontSize: "var(--font-size-xs)", fontWeight: "600", color: "var(--color-text-secondary)" }}>Location</label>
-                    <input
-                        type="text"
-                        className="input"
-                        placeholder="Where?"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        style={{ height: "48px" }}
-                    />
+                    <div style={{ position: "relative" }}>
+                        <input
+                            type="text"
+                            className="input"
+                            placeholder="Where?"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            style={{ height: "48px", width: "100%", paddingRight: "40px" }}
+                        />
+                        <button
+                            onClick={handleDetectLocation}
+                            disabled={isLocating}
+                            title="Detect my location"
+                            type="button"
+                            style={{
+                                position: "absolute",
+                                right: "8px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                color: "var(--color-primary)",
+                                opacity: isLocating ? 0.5 : 1,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            {isLocating ? (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="animate-spin"
+                                >
+                                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                                </svg>
+                            ) : (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="22" y1="12" x2="18" y2="12"></line>
+                                    <line x1="6" y1="12" x2="2" y2="12"></line>
+                                    <line x1="12" y1="6" x2="12" y2="2"></line>
+                                    <line x1="12" y1="22" x2="12" y2="18"></line>
+                                </svg>
+                            )}
+                        </button>
+                    </div>
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>

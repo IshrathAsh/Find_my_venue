@@ -446,6 +446,16 @@ p {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 /* Review Card Hover Effects */
 .review-card-hover:hover {
   transform: translateY(-8px);

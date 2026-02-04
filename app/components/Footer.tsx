@@ -7,7 +7,9 @@ export default function Footer() {
             <div className="container" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "var(--space-8)" }}>
                 <div>
                     <Link href="/">
-                        <h3 style={{ marginBottom: "var(--space-4)" }}>Find My Venue</h3>
+                        <div style={{ height: "40px", marginBottom: "var(--space-4)", display: "flex", alignItems: "center" }}>
+                            <img src="/logo.png?v=1.3" alt="Find My Venue" style={{ height: "100%", width: "auto" }} />
+                        </div>
                     </Link>
                     <p style={{ maxWidth: "250px" }}>
                         The easiest way to find your next event space. Like a trusted butler, we anticipate your needs.
