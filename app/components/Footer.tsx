@@ -8,7 +8,7 @@ export default function Footer() {
                 <div>
                     <Link href="/">
                         <div style={{ height: "40px", marginBottom: "var(--space-4)", display: "flex", alignItems: "center" }}>
-                            <img src="/logo.png?v=1.3" alt="Find My Venue" style={{ height: "100%", width: "auto" }} />
+                            <img src="/logo.png?v=1.4" alt="Find My Venue" style={{ height: "100%", width: "auto" }} />
                         </div>
                     </Link>
                     <p style={{ maxWidth: "250px" }}>
