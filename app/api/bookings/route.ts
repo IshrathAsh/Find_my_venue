@@ -36,16 +36,22 @@ export async function POST(request: Request) {
         const { error: emailError } = await resend.emails.send({
             from: 'Find My Venue <onboarding@resend.dev>', // Use your verified domain in production
             to: [process.env.NOTIFICATION_EMAIL || 'ishrath@example.com'],
-            subject: `New Booking Request: ${venueName}`,
+            subject: `Booking Request: ${userEmail} for ${venueName}`,
             html: `
-        <h1>New Booking Request</h1>
-        <p><strong>Venue:</strong> ${venueName}</p>
-        <p><strong>Guest Email:</strong> ${userEmail}</p>
-        <p><strong>Date:</strong> ${date}</p>
-        <p><strong>Guest Count:</strong> ${guestCount}</p>
-        <p><strong>Special Requirements:</strong> ${requirements || 'None'}</p>
-        <hr />
-        <p>Manage your bookings at the dashboard.</p>
+        <div style="font-family: sans-serif; padding: 20px; color: #333;">
+          <h2 style="color: #1a1a1a;">Hi there,</h2>
+          <p style="font-size: 16px; line-height: 1.5;">
+            <strong>${userEmail}</strong> has requested to book <strong>${venueName}</strong>.
+          </p>
+          <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Event Date:</strong> ${date}</p>
+            <p><strong>Guests:</strong> ${guestCount}</p>
+            <p><strong>Requirements:</strong> ${requirements || 'No special requirements listed.'}</p>
+          </div>
+          <p style="margin-top: 20px; font-size: 14px; color: #666;">
+            You can reach out to them directly at ${userEmail} to finalize the details.
+          </p>
+        </div>
       `,
         });
 
