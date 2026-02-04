@@ -1,24 +1,40 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import StandardPage from '../components/StandardPage';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAuth } from '../components/AuthProvider';
 
 export default function AuthPage() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const { user, loading: authLoading } = useAuth();
+
+    // Get the "next" parameter from URL (e.g., /auth?next=/venue/123/checkout)
+    const nextUrl = searchParams.get('next') || '/';
+
+    // Redirect authenticated users to their intended destination
+    useEffect(() => {
+        if (!authLoading && user) {
+            router.push(nextUrl);
+        }
+    }, [user, authLoading, nextUrl, router]);
 
     const handleGoogleLogin = async () => {
         setLoading(true);
         setMessage(null);
 
         try {
+            // Build the full redirect URL including the "next" parameter
+            const redirectTo = `${window.location.origin}/auth${nextUrl !== '/' ? `?next=${encodeURIComponent(nextUrl)}` : ''}`;
+
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin
+                    redirectTo
                 }
             });
 
@@ -28,6 +44,20 @@ export default function AuthPage() {
             setLoading(false);
         }
     };
+
+    // Show loading state while checking authentication
+    if (authLoading) {
+        return (
+            <StandardPage
+                title="Account Access"
+                content={
+                    <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
+                        <p style={{ color: 'var(--color-text-secondary)' }}>Loading...</p>
+                    </div>
+                }
+            />
+        );
+    }
 
     return (
         <StandardPage

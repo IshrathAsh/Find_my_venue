@@ -27,7 +27,8 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
 
     const handleConfirm = async () => {
         if (!user) {
-            router.push('/auth');
+            // Redirect to auth with current page as "next" parameter
+            router.push(`/auth?next=${encodeURIComponent(window.location.pathname)}`);
             return;
         }
 
