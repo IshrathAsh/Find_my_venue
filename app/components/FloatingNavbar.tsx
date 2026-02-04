@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { MapPin, ChevronRight, User } from "lucide-react";
+import { MapPin, User, LogOut } from "lucide-react";
 import { requestLocation } from "../lib/location";
+import { useAuth } from "./AuthProvider";
 
 export default function FloatingNavbar() {
+    const { user, signOut } = useAuth();
     const [location, setLocation] = useState<string | null>(null);
     const [status, setStatus] = useState<"idle" | "detecting" | "denied" | "resolved">("idle");
 
@@ -24,7 +26,7 @@ export default function FloatingNavbar() {
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         handleDetect();
     }, []);
 
@@ -44,10 +46,10 @@ export default function FloatingNavbar() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                width: "75%",
-                maxWidth: "1100px",
+                width: "85%",
+                maxWidth: "1200px",
                 gap: "var(--space-6)",
-                padding: "10px 20px",
+                padding: "10px 24px",
                 borderRadius: "var(--radius-full)",
                 boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
                 border: "1px solid rgba(255,255,255,0.4)",
@@ -57,20 +59,8 @@ export default function FloatingNavbar() {
                 {/* Brand / Logo - Left Section */}
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
                     <Link href="/" style={{ display: "flex", alignItems: "center" }}>
-                        <div style={{
-                            height: "60px",
-                            display: "flex",
-                            alignItems: "center",
-                        }}>
-                            <img
-                                src="/logo.png?v=1.2"
-                                alt="logo"
-                                style={{
-                                    height: "60%",
-                                    width: "auto",
-                                    objectFit: "contain"
-                                }}
-                            />
+                        <div style={{ height: "60px", display: "flex", alignItems: "center" }}>
+                            <img src="/logo.png?v=1.2" alt="logo" style={{ height: "60%", width: "auto", objectFit: "contain" }} />
                         </div>
                     </Link>
                 </div>
@@ -110,14 +100,60 @@ export default function FloatingNavbar() {
 
                     <div style={{ width: "1px", height: "20px", background: "rgba(0,0,0,0.08)" }}></div>
 
-                    <Link href="/contact" className="btn btn-primary" style={{ padding: "8px 20px", height: "40px", fontSize: "14px" }}>
-                        <User size={14} /> Sign in
-                    </Link>
+                    {user ? (
+                        <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+                                <div style={{
+                                    width: "36px",
+                                    height: "36px",
+                                    borderRadius: "50%",
+                                    background: "var(--color-accent)",
+                                    color: "#fff",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontWeight: "700",
+                                    fontSize: "14px"
+                                }}>
+                                    {user.email?.charAt(0).toUpperCase()}
+                                </div>
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontWeight: "600",
+                                    color: "var(--color-text-primary)",
+                                    maxWidth: "100px",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap"
+                                }}>
+                                    {user.email?.split('@')[0]}
+                                </span>
+                            </div>
+                            <button
+                                onClick={() => signOut()}
+                                style={{
+                                    background: "none",
+                                    border: "none",
+                                    color: "var(--color-text-secondary)",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    padding: "4px"
+                                }}
+                                title="Sign Out"
+                            >
+                                <LogOut size={16} />
+                            </button>
+                        </div>
+                    ) : (
+                        <Link href="/auth" className="btn btn-primary" style={{ padding: "8px 20px", height: "40px", fontSize: "14px" }}>
+                            <User size={14} /> Sign in
+                        </Link>
+                    )}
                 </div>
             </nav>
 
             <style jsx>{`
-                @keyframes spin { to { transform: rotate(360deg); } }
                 .nav-link { 
                     font-size: var(--font-size-sm); 
                     font-weight: 500; 
@@ -128,6 +164,6 @@ export default function FloatingNavbar() {
                 .nav-link:hover { opacity: 1; }
                 nav:hover { transform: translateY(1px); boxShadow: 0 12px 40px rgba(0,0,0,0.15); }
             `}</style>
-        </div >
+        </div>
     );
 }

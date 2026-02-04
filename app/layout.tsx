@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "./components/Footer";
 import FloatingNavbar from "./components/FloatingNavbar";
+import { AuthProvider } from "./components/AuthProvider";
 
 export const metadata: Metadata = {
     title: "Find My Venue | Calm & Trusted Venue Discovery",
@@ -26,14 +27,16 @@ export default function RootLayout({
                 minHeight: "100vh",
                 position: "relative"
             }}>
-                <FloatingNavbar />
+                <AuthProvider>
+                    <FloatingNavbar />
 
-                {/* Spacer for floating navbar */}
-                <div style={{ height: "120px" }}></div>
+                    {/* Spacer for floating navbar */}
+                    <div style={{ height: "120px" }}></div>
 
-                {children}
+                    {children}
 
-                <Footer />
+                    <Footer />
+                </AuthProvider>
             </body>
         </html>
     );
