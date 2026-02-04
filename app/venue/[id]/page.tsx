@@ -12,6 +12,8 @@ export default function VenuePage({ params }: { params: { id: string } }) {
     const [copied, setCopied] = useState(false);
     const [showToast, setShowToast] = useState<string | null>(null);
     const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
+    const [guestCount, setGuestCount] = useState(100);
+    const [eventDate, setEventDate] = useState("2024-12-25");
 
     if (!venue) {
         notFound();
@@ -365,15 +367,32 @@ export default function VenuePage({ params }: { params: { id: string } }) {
                             <div className="grid" style={{ gap: "var(--space-4)", marginBottom: "var(--space-6)" }}>
                                 <div>
                                     <label style={{ fontSize: "12px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-text-secondary)", display: "block", marginBottom: "6px" }}>Event Date</label>
-                                    <input type="date" className="input" defaultValue="2024-12-25" />
+                                    <input
+                                        type="date"
+                                        className="input"
+                                        value={eventDate}
+                                        onChange={(e) => setEventDate(e.target.value)}
+                                    />
                                 </div>
                                 <div>
                                     <label style={{ fontSize: "12px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-text-secondary)", display: "block", marginBottom: "6px" }}>Guest Count</label>
-                                    <input type="number" className="input" placeholder="How many?" defaultValue="100" />
+                                    <input
+                                        type="number"
+                                        className="input"
+                                        placeholder="How many?"
+                                        value={guestCount}
+                                        onChange={(e) => setGuestCount(parseInt(e.target.value) || 0)}
+                                        min={venue.capacityMin}
+                                        max={venue.capacityMax}
+                                    />
                                 </div>
                             </div>
 
-                            <Link href={`/venue/${venue.id}/checkout`} className="btn btn-primary" style={{ width: "100%", padding: "16px" }}>
+                            <Link
+                                href={`/venue/${venue.id}/checkout?guests=${guestCount}&date=${eventDate}`}
+                                className="btn btn-primary"
+                                style={{ width: "100%", padding: "16px" }}
+                            >
                                 Check Availability & Price
                             </Link>
 

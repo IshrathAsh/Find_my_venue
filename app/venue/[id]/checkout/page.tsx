@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { mockVenues, occasions } from "../../../lib/venueData";
 import { ShieldCheck, Info, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import { notFound, useRouter } from "next/navigation";
+import { notFound, useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../../../components/AuthProvider";
 import { supabase } from "../../../lib/supabase";
 
@@ -12,9 +12,14 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
     const venue = mockVenues.find((v) => v.id === params.id);
     const { user } = useAuth();
     const router = useRouter();
+    const searchParams = useSearchParams();
 
-    const [guestCount, setGuestCount] = useState(100);
-    const [date, setDate] = useState("2024-12-25");
+    // Get values from URL parameters or use defaults
+    const initialGuests = parseInt(searchParams.get('guests') || '100');
+    const initialDate = searchParams.get('date') || '2024-12-25';
+
+    const [guestCount, setGuestCount] = useState(initialGuests);
+    const [date, setDate] = useState(initialDate);
     const [occasion, setOccasion] = useState(venue?.supportedOccasions?.[0] || "");
     const [requirements, setRequirements] = useState("");
     const [loading, setLoading] = useState(false);
