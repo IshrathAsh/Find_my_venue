@@ -6,6 +6,7 @@ import { ShieldCheck, Info, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { useAuth } from "../../../components/AuthProvider";
+import { supabase } from "../../../lib/supabase";
 
 export default function CheckoutPage({ params }: { params: { id: string } }) {
     const venue = mockVenues.find((v) => v.id === params.id);
@@ -34,9 +35,15 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
 
         setLoading(true);
         try {
+            // Get the user's session token
+            const { data: { session } } = await supabase.auth.getSession();
+
             const response = await fetch('/api/bookings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session?.access_token}`
+                },
                 body: JSON.stringify({
                     venueId: venue.id,
                     venueName: venue.name,

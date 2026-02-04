@@ -3,48 +3,77 @@ import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-);
 
 export async function POST(request: Request) {
   try {
     const { venueId, venueName, guestCount, date, occasion, requirements, userEmail } = await request.json();
 
-    // 1. Store in Supabase
-    const { data, error: sbError } = await supabase
+    // Get the authorization header to authenticate the user
+    const authHeader = request.headers.get('authorization');
+
+    // Create Supabase client with the user's session token
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+      {
+        global: {
+          headers: authHeader ? { Authorization: authHeader } : {},
+        },
+      }
+    );
+
+    // Get the authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({
+        success: false,
+        error: 'User not authenticated',
+        hint: 'Please sign in to make a booking.'
+      }, { status: 401 });
+    }
+
+    // 1. Store booking in Supabase
+    const { data: bookingData, error: sbError } = await supabase
       .from('bookings')
       .insert([
         {
+          user_id: user.id,
+          user_email: userEmail,
           venue_id: venueId,
           venue_name: venueName,
           guest_count: guestCount,
           event_date: date,
           occasion: occasion,
-          requirements,
-          user_email: userEmail
+          special_requirements: requirements || null,
+          status: 'pending'
         }
-      ]);
+      ])
+      .select()
+      .single();
 
     if (sbError) {
       console.error('Supabase Error:', sbError);
-      // Note: You need to create a 'bookings' table in your Supabase dashboard first!
-      // Table columns: id (uuid/int), venue_id (text), venue_name (text), guest_count (int), event_date (date), requirements (text), user_email (text), created_at (timestamp)
+      return NextResponse.json({
+        success: false,
+        error: 'Failed to save booking',
+        hint: sbError.message
+      }, { status: 500 });
     }
 
-    // 2. Send email via Resend
+    // 2. Send email notification via Resend
     const { error: emailError } = await resend.emails.send({
       from: 'Find My Venue <onboarding@resend.dev>', // Use your verified domain in production
-      to: [process.env.NOTIFICATION_EMAIL || 'ishrath@example.com'],
-      subject: `Booking Request: ${userEmail} for ${venueName}`,
+      to: [process.env.NOTIFICATION_EMAIL || 'ishrathash675@gmail.com'],
+      subject: `New Booking Request: ${userEmail} for ${venueName}`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; color: #333;">
-          <h2 style="color: #1a1a1a;">Hi there,</h2>
+          <h2 style="color: #1a1a1a;">New Booking Request</h2>
           <p style="font-size: 16px; line-height: 1.5;">
             <strong>${userEmail}</strong> has requested to book <strong>${venueName}</strong>.
           </p>
           <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Booking ID:</strong> ${bookingData.id}</p>
             <p><strong>Occasion:</strong> ${occasion}</p>
             <p><strong>Event Date:</strong> ${date}</p>
             <p><strong>Guests:</strong> ${guestCount}</p>
@@ -59,15 +88,20 @@ export async function POST(request: Request) {
 
     if (emailError) {
       console.error('Resend Error:', emailError);
-      return NextResponse.json({
-        success: false,
-        error: emailError.message,
-        hint: "If using onboarding@resend.dev, you can only send to the email you signed up with."
-      }, { status: 400 });
+      // Don't fail the request if email fails - booking is already saved
+      console.warn('Booking saved but email notification failed');
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      bookingId: bookingData.id,
+      message: 'Booking request submitted successfully'
+    });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    console.error('Booking API Error:', error);
+    return NextResponse.json({
+      success: false,
+      error: error.message || 'Internal server error'
+    }, { status: 500 });
   }
 }
