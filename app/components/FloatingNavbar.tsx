@@ -60,7 +60,7 @@ export default function FloatingNavbar() {
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
                     <Link href="/" style={{ display: "flex", alignItems: "center" }}>
                         <div style={{ height: "60px", display: "flex", alignItems: "center" }}>
-                            <img src="/navlogo.png" alt="logo" style={{ height: "60%", width: "auto", objectFit: "contain" }} />
+                            <img src="/newlogo.png" alt="logo" style={{ height: "60%", width: "auto", objectFit: "contain" }} />
                         </div>
                     </Link>
                 </div>
