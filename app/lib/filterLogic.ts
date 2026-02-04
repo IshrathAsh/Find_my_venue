@@ -4,15 +4,17 @@ export interface FilterParams {
     location: string;
     occasion: string;
     guestCount: number;
+    maxPrice?: number;
 }
 
 export const filterVenues = (params: FilterParams): Venue[] => {
-    const { location, occasion, guestCount } = params;
+    const { location, occasion, guestCount, maxPrice } = params;
 
     // 1. Strict Match
     let results = mockVenues.filter((venue) => {
         const matchesOccasion = occasion ? venue.supportedOccasions.includes(occasion) : true;
         const matchesCapacity = guestCount ? (venue.capacityMin <= guestCount && venue.capacityMax >= guestCount) : true;
+        const matchesPrice = maxPrice ? (venue.pricePerPlate || 0) <= maxPrice : true;
 
         // Simple area match for location
         const matchesLocation = location
@@ -20,7 +22,7 @@ export const filterVenues = (params: FilterParams): Venue[] => {
             location.toLowerCase().includes(venue.area.toLowerCase())
             : true;
 
-        return matchesOccasion && matchesCapacity && matchesLocation;
+        return matchesOccasion && matchesCapacity && matchesLocation && matchesPrice;
     });
 
     // 2. Fallback Logic

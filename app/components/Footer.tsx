@@ -10,7 +10,7 @@ export default function Footer() {
                         <h3 style={{ marginBottom: "var(--space-4)" }}>Find My Venue</h3>
                     </Link>
                     <p style={{ maxWidth: "250px" }}>
-                        The calmest way to find your next event space. Like a trusted butler, we anticipate your needs.
+                        The easiest way to find your next event space. Like a trusted butler, we anticipate your needs.
                     </p>
                 </div>
                 <div className="grid grid-3">

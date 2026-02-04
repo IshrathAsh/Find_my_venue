@@ -9,7 +9,7 @@ import Reviews from "./components/Reviews";
 import { filterVenues, FilterParams } from "./lib/filterLogic";
 
 export default function Home() {
-    const [filters, setFilters] = useState<FilterParams>({
+    const [appliedFilters, setAppliedFilters] = useState<FilterParams>({
         location: "",
         occasion: "",
         guestCount: 0,
@@ -20,21 +20,22 @@ export default function Home() {
             const { requestLocation } = await import("./lib/location");
             const detectedLocation = await requestLocation();
             if (detectedLocation) {
-                setFilters(prev => ({ ...prev, location: detectedLocation }));
+                // Set initial applied filters so something shows up initially
+                setAppliedFilters(prev => ({ ...prev, location: detectedLocation }));
             }
         };
         autoDetect();
     }, []);
 
     const filteredData = useMemo(() => {
-        return filterVenues(filters);
-    }, [filters]);
+        return filterVenues(appliedFilters);
+    }, [appliedFilters]);
 
-    const isFallback = filters.location || filters.occasion || filters.guestCount
+    const isFallback = appliedFilters.location || appliedFilters.occasion || appliedFilters.guestCount
         ? filteredData.length > 0 && !filteredData.every(v =>
-            (!filters.location || v.area.toLowerCase().includes(filters.location.toLowerCase())) &&
-            (!filters.occasion || v.supportedOccasions.includes(filters.occasion)) &&
-            (!filters.guestCount || (v.capacityMin <= filters.guestCount && v.capacityMax >= filters.guestCount))
+            (!appliedFilters.location || v.area.toLowerCase().includes(appliedFilters.location.toLowerCase())) &&
+            (!appliedFilters.occasion || v.supportedOccasions.includes(appliedFilters.occasion)) &&
+            (!appliedFilters.guestCount || (v.capacityMin <= appliedFilters.guestCount && v.capacityMax >= appliedFilters.guestCount))
         )
         : false;
 
@@ -43,22 +44,22 @@ export default function Home() {
             <Hero />
 
             <Filters
-                initialLocation={filters.location}
-                onFilterChange={(newFilters) => setFilters(newFilters)}
+                initialLocation={appliedFilters.location}
+                onSearch={(newFilters) => setAppliedFilters(newFilters)}
             />
 
             <div style={{ padding: "var(--space-16) 0" }}>
                 <VenueList
                     venues={filteredData}
-                    title={filters.occasion ? `Recommended for ${filters.occasion}` : "Featured Venues"}
+                    title={appliedFilters.occasion ? `Recommended for ${appliedFilters.occasion}` : "Featured Venues"}
                     isFallback={isFallback}
                 />
             </div>
 
-            {filters.occasion && <BestForOccasion occasion={filters.occasion} />}
+            {appliedFilters.occasion && <BestForOccasion occasion={appliedFilters.occasion} />}
 
             <div style={{ background: "rgba(0,0,0,0.02)", padding: "var(--space-8) 0" }}>
-                <Reviews occasion={filters.occasion} limit={3} />
+                <Reviews occasion={appliedFilters.occasion} limit={3} />
             </div>
         </main>
     );

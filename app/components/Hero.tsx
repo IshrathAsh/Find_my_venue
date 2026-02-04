@@ -46,7 +46,7 @@ export default function Hero() {
                     opacity: 0.9
                 }}>
                     Tell us where, when, and for how many people. <br />
-                    We’ll take care of the rest—with calm, curated service.
+                    We’ll take care of the rest—with professional, curated service.
                 </p>
 
             </div>

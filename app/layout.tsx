@@ -5,8 +5,8 @@ import FloatingNavbar from "./components/FloatingNavbar";
 import { AuthProvider } from "./components/AuthProvider";
 
 export const metadata: Metadata = {
-    title: "Find My Venue | Calm & Trusted Venue Discovery",
-    description: "We'll help you find the perfect venue for your next occasion. No surprises, just calm discovery.",
+    title: "Find My Venue | Trusted Venue Discovery",
+    description: "We'll help you find the perfect venue for your next occasion. Trusted, professional service for efficient discovery.",
 };
 
 export default function RootLayout({
