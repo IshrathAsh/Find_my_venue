@@ -58,7 +58,7 @@ export default function Home() {
             {filters.occasion && <BestForOccasion occasion={filters.occasion} />}
 
             <div style={{ background: "rgba(0,0,0,0.02)", padding: "var(--space-8) 0" }}>
-                <Reviews occasion={filters.occasion} />
+                <Reviews occasion={filters.occasion} limit={3} />
             </div>
         </main>
     );

@@ -44,16 +44,16 @@ const mockReviews: Review[] = [
     }
 ];
 
-export default function Reviews({ occasion, layout = "grid" }: { occasion?: string, layout?: "grid" | "stack" }) {
+export default function Reviews({ occasion, layout = "grid", limit, showTitle = true }: { occasion?: string, layout?: "grid" | "stack", limit?: number, showTitle?: boolean }) {
     const filteredReviews = occasion
         ? mockReviews.filter(r => r.occasion === occasion)
-        : mockReviews; // Show all on dedicated page or filtered by occasion
+        : mockReviews;
 
-    const displayReviews = occasion ? filteredReviews : (layout === "grid" ? filteredReviews.slice(0, 3) : filteredReviews);
+    const displayReviews = limit ? filteredReviews.slice(0, limit) : filteredReviews;
 
     return (
         <section className="container" style={{ padding: 0 }}>
-            {!occasion && layout === "grid" && <h2 style={{ marginBottom: "var(--space-8)", textAlign: "center", fontSize: "var(--font-size-xl)" }}>What our guests are saying</h2>}
+            {!occasion && layout === "grid" && showTitle && <h2 style={{ marginBottom: "var(--space-8)", textAlign: "center", fontSize: "var(--font-size-xl)" }}>What our guests are saying</h2>}
 
             <div className={layout === "grid" ? "grid grid-3" : "grid grid-1"} style={{ gap: "var(--space-6)" }}>
                 {displayReviews.map((review) => (

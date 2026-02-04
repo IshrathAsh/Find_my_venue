@@ -6,12 +6,13 @@ import Link from "next/link";
 interface StandardPageProps {
     title: string;
     content: React.ReactNode;
+    maxWidth?: string;
 }
 
-export default function StandardPage({ title, content }: StandardPageProps) {
+export default function StandardPage({ title, content, maxWidth = "700px" }: StandardPageProps) {
     return (
         <main className="container" style={{ padding: "var(--space-16) var(--space-6)" }}>
-            <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+            <div style={{ maxWidth: maxWidth, margin: "0 auto" }}>
                 <h1 style={{ marginBottom: "var(--space-8)" }}>{title}</h1>
                 <div style={{ color: "var(--color-text-secondary)", lineHeight: "1.8" }}>
                     {content}
